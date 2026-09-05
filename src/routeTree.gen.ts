@@ -12,7 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as BookMeasurementRouteImport } from './routes/book-measurement'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CustomOrderRouteImport } from './routes/custom-order'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as MeasurementGuideRouteImport } from './routes/measurement-guide'
@@ -39,9 +41,19 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BookMeasurementRoute = BookMeasurementRouteImport.update({
+  id: '/book-measurement',
+  path: '/book-measurement',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CustomOrderRoute = CustomOrderRouteImport.update({
+  id: '/custom-order',
+  path: '/custom-order',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GalleryRoute = GalleryRouteImport.update({
@@ -99,7 +111,9 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/book-measurement': typeof BookMeasurementRoute
   '/contact': typeof ContactRoute
+  '/custom-order': typeof CustomOrderRoute
   '/gallery': typeof GalleryRoute
   '/how-it-works': typeof HowItWorksRoute
   '/measurement-guide': typeof MeasurementGuideRoute
@@ -115,7 +129,9 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/book-measurement': typeof BookMeasurementRoute
   '/contact': typeof ContactRoute
+  '/custom-order': typeof CustomOrderRoute
   '/gallery': typeof GalleryRoute
   '/how-it-works': typeof HowItWorksRoute
   '/measurement-guide': typeof MeasurementGuideRoute
@@ -132,7 +148,9 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/book-measurement': typeof BookMeasurementRoute
   '/contact': typeof ContactRoute
+  '/custom-order': typeof CustomOrderRoute
   '/gallery': typeof GalleryRoute
   '/how-it-works': typeof HowItWorksRoute
   '/measurement-guide': typeof MeasurementGuideRoute
@@ -150,7 +168,9 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/auth'
+    | '/book-measurement'
     | '/contact'
+    | '/custom-order'
     | '/gallery'
     | '/how-it-works'
     | '/measurement-guide'
@@ -166,7 +186,9 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/auth'
+    | '/book-measurement'
     | '/contact'
+    | '/custom-order'
     | '/gallery'
     | '/how-it-works'
     | '/measurement-guide'
@@ -182,7 +204,9 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/auth'
+    | '/book-measurement'
     | '/contact'
+    | '/custom-order'
     | '/gallery'
     | '/how-it-works'
     | '/measurement-guide'
@@ -199,7 +223,9 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRoute
+  BookMeasurementRoute: typeof BookMeasurementRoute
   ContactRoute: typeof ContactRoute
+  CustomOrderRoute: typeof CustomOrderRoute
   GalleryRoute: typeof GalleryRoute
   HowItWorksRoute: typeof HowItWorksRoute
   MeasurementGuideRoute: typeof MeasurementGuideRoute
@@ -235,11 +261,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/book-measurement': {
+      id: '/book-measurement'
+      path: '/book-measurement'
+      fullPath: '/book-measurement'
+      preLoaderRoute: typeof BookMeasurementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/custom-order': {
+      id: '/custom-order'
+      path: '/custom-order'
+      fullPath: '/custom-order'
+      preLoaderRoute: typeof CustomOrderRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/gallery': {
@@ -319,7 +359,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AuthRoute: AuthRoute,
+  BookMeasurementRoute: BookMeasurementRoute,
   ContactRoute: ContactRoute,
+  CustomOrderRoute: CustomOrderRoute,
   GalleryRoute: GalleryRoute,
   HowItWorksRoute: HowItWorksRoute,
   MeasurementGuideRoute: MeasurementGuideRoute,

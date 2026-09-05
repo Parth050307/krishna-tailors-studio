@@ -20,7 +20,7 @@ import {
 } from "@/lib/brand";
 import { inr } from "@/lib/format";
 import { useServices, useFabrics, useMeasurementFields, useAddresses } from "@/lib/queries";
-import { uploadOrderFile } from "@/lib/storage";
+import { uploadFile } from "@/lib/storage";
 
 export const Route = createFileRoute("/custom-order")({
   head: () => ({
@@ -50,10 +50,10 @@ function CustomOrder() {
 
   const [serviceId, setServiceId] = useState("");
   const [garment, setGarment] = useState("BLOUSE");
-  const [occasion, setOccasion] = useState(OCCASIONS[0] ?? "Everyday");
-  const [neck, setNeck] = useState(NECK_DESIGNS[0] ?? "");
-  const [sleeve, setSleeve] = useState(SLEEVE_DESIGNS[0] ?? "");
-  const [back, setBack] = useState(BACK_DESIGNS[0] ?? "");
+  const [occasion, setOccasion] = useState<string>(OCCASIONS[0] ?? "Everyday");
+  const [neck, setNeck] = useState<string>(NECK_DESIGNS[0] ?? "");
+  const [sleeve, setSleeve] = useState<string>(SLEEVE_DESIGNS[0] ?? "");
+  const [back, setBack] = useState<string>(BACK_DESIGNS[0] ?? "");
   const [fabricSource, setFabricSource] = useState("STUDIO");
   const [fabricId, setFabricId] = useState("");
   const [meters, setMeters] = useState(2);
@@ -61,7 +61,7 @@ function CustomOrder() {
   const [notes, setNotes] = useState("");
   const [files, setFiles] = useState<File[]>([]);
   const [unit, setUnit] = useState("in");
-  const [mode, setMode] = useState(MEASUREMENT_MODES[0]?.value ?? "SELF");
+  const [mode, setMode] = useState<string>(MEASUREMENT_MODES[0]?.value ?? "KNOWN");
   const [values, setValues] = useState<Record<string, number>>({});
   const [deliveryMode, setDeliveryMode] = useState("DELIVERY");
   const [addressId, setAddressId] = useState("");
@@ -99,6 +99,7 @@ function CustomOrder() {
       .from("orders")
       .insert({
         user_id: user.id,
+        order_number: "",
         occasion,
         fabric_source: fabricSource,
         fabric_id: fabricSource === "STUDIO" && fabricId ? fabricId : null,
@@ -150,7 +151,7 @@ function CustomOrder() {
 
     for (const file of files.slice(0, 5)) {
       try {
-        await uploadOrderFile(file, user.id, order.id);
+        await uploadFile(file, user.id, order.id);
       } catch {
         toast.info(`Could not upload ${file.name}`);
       }
@@ -380,7 +381,7 @@ function CustomOrder() {
                   </Button>
                 ))}
               </div>
-              {mode === "STAFF" ? (
+              {mode === "APPOINTMENT" ? (
                 <p className="mt-4 text-sm text-muted-foreground">
                   Our staff will take your measurements.{" "}
                   <Link to="/book-measurement" className="text-primary underline">
