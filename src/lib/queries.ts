@@ -247,7 +247,7 @@ export function useBookedSlots(date: string | undefined) {
     queryFn: async () => {
       const { data, error } = await supabase.rpc("booked_slots", { _date: date! });
       if (error) throw error;
-      return (data ?? []) as string[];
+      return (data ?? []).map((row) => row.slot);
     },
   });
 }
