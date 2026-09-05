@@ -13,6 +13,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
+import { Route as MeasurementGuideRouteImport } from './routes/measurement-guide'
+import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as RefundCancellationRouteImport } from './routes/refund-cancellation'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as WeddingBridalRouteImport } from './routes/wedding-bridal'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
@@ -37,6 +42,31 @@ const HowItWorksRoute = HowItWorksRouteImport.update({
   path: '/how-it-works',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MeasurementGuideRoute = MeasurementGuideRouteImport.update({
+  id: '/measurement-guide',
+  path: '/measurement-guide',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RefundCancellationRoute = RefundCancellationRouteImport.update({
+  id: '/refund-cancellation',
+  path: '/refund-cancellation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WeddingBridalRoute = WeddingBridalRouteImport.update({
   id: '/wedding-bridal',
   path: '/wedding-bridal',
@@ -58,6 +88,11 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/gallery': typeof GalleryRoute
   '/how-it-works': typeof HowItWorksRoute
+  '/measurement-guide': typeof MeasurementGuideRoute
+  '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
+  '/refund-cancellation': typeof RefundCancellationRoute
+  '/terms': typeof TermsRoute
   '/wedding-bridal': typeof WeddingBridalRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/services/': typeof ServicesIndexRoute
@@ -67,6 +102,11 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/gallery': typeof GalleryRoute
   '/how-it-works': typeof HowItWorksRoute
+  '/measurement-guide': typeof MeasurementGuideRoute
+  '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
+  '/refund-cancellation': typeof RefundCancellationRoute
+  '/terms': typeof TermsRoute
   '/wedding-bridal': typeof WeddingBridalRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/services': typeof ServicesIndexRoute
@@ -77,6 +117,11 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/gallery': typeof GalleryRoute
   '/how-it-works': typeof HowItWorksRoute
+  '/measurement-guide': typeof MeasurementGuideRoute
+  '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
+  '/refund-cancellation': typeof RefundCancellationRoute
+  '/terms': typeof TermsRoute
   '/wedding-bridal': typeof WeddingBridalRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/services/': typeof ServicesIndexRoute
@@ -88,6 +133,11 @@ export interface FileRouteTypes {
     | '/about'
     | '/gallery'
     | '/how-it-works'
+    | '/measurement-guide'
+    | '/pricing'
+    | '/privacy'
+    | '/refund-cancellation'
+    | '/terms'
     | '/wedding-bridal'
     | '/services/$slug'
     | '/services/'
@@ -97,6 +147,11 @@ export interface FileRouteTypes {
     | '/about'
     | '/gallery'
     | '/how-it-works'
+    | '/measurement-guide'
+    | '/pricing'
+    | '/privacy'
+    | '/refund-cancellation'
+    | '/terms'
     | '/wedding-bridal'
     | '/services/$slug'
     | '/services'
@@ -106,6 +161,11 @@ export interface FileRouteTypes {
     | '/about'
     | '/gallery'
     | '/how-it-works'
+    | '/measurement-guide'
+    | '/pricing'
+    | '/privacy'
+    | '/refund-cancellation'
+    | '/terms'
     | '/wedding-bridal'
     | '/services/$slug'
     | '/services/'
@@ -116,6 +176,11 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   GalleryRoute: typeof GalleryRoute
   HowItWorksRoute: typeof HowItWorksRoute
+  MeasurementGuideRoute: typeof MeasurementGuideRoute
+  PricingRoute: typeof PricingRoute
+  PrivacyRoute: typeof PrivacyRoute
+  RefundCancellationRoute: typeof RefundCancellationRoute
+  TermsRoute: typeof TermsRoute
   WeddingBridalRoute: typeof WeddingBridalRoute
   ServicesSlugRoute: typeof ServicesSlugRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
@@ -151,6 +216,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HowItWorksRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/measurement-guide': {
+      id: '/measurement-guide'
+      path: '/measurement-guide'
+      fullPath: '/measurement-guide'
+      preLoaderRoute: typeof MeasurementGuideRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/refund-cancellation': {
+      id: '/refund-cancellation'
+      path: '/refund-cancellation'
+      fullPath: '/refund-cancellation'
+      preLoaderRoute: typeof RefundCancellationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/wedding-bridal': {
       id: '/wedding-bridal'
       path: '/wedding-bridal'
@@ -180,6 +280,11 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   GalleryRoute: GalleryRoute,
   HowItWorksRoute: HowItWorksRoute,
+  MeasurementGuideRoute: MeasurementGuideRoute,
+  PricingRoute: PricingRoute,
+  PrivacyRoute: PrivacyRoute,
+  RefundCancellationRoute: RefundCancellationRoute,
+  TermsRoute: TermsRoute,
   WeddingBridalRoute: WeddingBridalRoute,
   ServicesSlugRoute: ServicesSlugRoute,
   ServicesIndexRoute: ServicesIndexRoute,
