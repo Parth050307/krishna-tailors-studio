@@ -3,7 +3,7 @@ import { SiteLayout, PageHero, Section } from "@/components/site/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { useMyOrders, useMyAppointments, useNotifications } from "@/lib/queries";
-import { inr, dateLabel } from "@/lib/format";
+import { inr, shortDate } from "@/lib/format";
 import { ORDER_FLOW, STATUS_LABEL, PAYMENT_LABEL } from "@/lib/brand";
 
 export const Route = createFileRoute("/dashboard")({
@@ -75,7 +75,7 @@ function Dashboard() {
                           {order.order_number}
                         </p>
                         <p className="text-sm text-muted-foreground">
-                          {dateLabel(order.created_at)}
+                          {shortDate(order.created_at)}
                         </p>
                       </div>
                       <p className="mt-2 text-sm">
@@ -119,7 +119,7 @@ function Dashboard() {
                     className="flex flex-wrap items-center justify-between gap-2 rounded-sm border border-border bg-card px-4 py-3 text-sm"
                   >
                     <span className="text-primary">
-                      {dateLabel(a.scheduled_date)} · {a.slot}
+                      {shortDate(a.scheduled_date)} · {a.slot}
                     </span>
                     <span className="text-muted-foreground">
                       {a.mode === "HOME" ? "Home visit" : "At studio"} · {a.status}

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { ORDER_FLOW, STATUS_LABEL, PAYMENT_LABEL, type OrderStatus } from "@/lib/brand";
-import { inr, dateLabel } from "@/lib/format";
+import { inr, shortDate } from "@/lib/format";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -118,7 +118,7 @@ function Admin() {
               <span className="text-muted-foreground">{STATUS_LABEL[o.status]}</span>
               <span className="text-muted-foreground">{PAYMENT_LABEL[o.payment_status]}</span>
               <span>{inr(o.total)}</span>
-              <span className="text-muted-foreground">{dateLabel(o.created_at)}</span>
+              <span className="text-muted-foreground">{shortDate(o.created_at)}</span>
               <Button size="sm" variant="outline" onClick={() => advance(o.id, o.status)}>
                 Advance stage
               </Button>
@@ -135,7 +135,7 @@ function Admin() {
             >
               <span className="text-primary">{a.contact_name}</span>
               <span className="text-muted-foreground">
-                {dateLabel(a.scheduled_date)} · {a.slot}
+                {shortDate(a.scheduled_date)} · {a.slot}
               </span>
               <span className="text-muted-foreground">
                 {a.mode} {a.city ? `· ${a.city}` : ""}

@@ -273,10 +273,10 @@ function CustomOrder() {
             <div className="card-luxe rounded-sm p-6">
               <h2 className="font-display text-xl text-primary">3. Fabric</h2>
               <div className="mt-4 flex gap-2">
-                {[
+                {([
                   ["STUDIO", "Studio fabric"],
                   ["CUSTOMER", "I'll provide fabric"],
-                ].map(([value, label]) => (
+                ] as const).map(([value, label]) => (
                   <Button
                     key={value}
                     size="sm"
@@ -436,10 +436,10 @@ function CustomOrder() {
             <div className="card-luxe rounded-sm p-6">
               <h2 className="font-display text-xl text-primary">6. Delivery</h2>
               <div className="mt-4 flex gap-2">
-                {[
+                {([
                   ["DELIVERY", "Home delivery"],
                   ["PICKUP", "Studio pickup"],
-                ].map(([value, label]) => (
+                ] as const).map(([value, label]) => (
                   <Button
                     key={value}
                     size="sm"
