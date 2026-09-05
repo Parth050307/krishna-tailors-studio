@@ -5,7 +5,7 @@ import { useSettings } from "@/lib/queries";
 
 export function SiteFooter() {
   const { data: settings } = useSettings();
-  const contact = settings?.contact ?? {};
+  const contact: Record<string, string> = settings?.["contact"] ?? {};
 
   return (
     <footer className="mt-24 border-t border-border bg-sidebar text-sidebar-foreground">
