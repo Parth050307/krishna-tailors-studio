@@ -20,7 +20,7 @@ import {
 } from "@/lib/brand";
 import { inr } from "@/lib/format";
 import { useServices, useFabrics, useMeasurementFields, useAddresses } from "@/lib/queries";
-import { uploadFile } from "@/lib/storage";
+import { storage, validateFile } from "@/lib/storage";
 
 export const Route = createFileRoute("/custom-order")({
   head: () => ({
@@ -150,8 +150,13 @@ function CustomOrder() {
     await supabase.from("orders").update({ payment_status: "PAID" }).eq("id", order.id);
 
     for (const file of files.slice(0, 5)) {
+      const invalid = validateFile(file);
+      if (invalid) {
+        toast.info(invalid);
+        continue;
+      }
       try {
-        await uploadFile(file, user.id, order.id);
+        await storage.upload(user.id, file);
       } catch {
         toast.info(`Could not upload ${file.name}`);
       }
