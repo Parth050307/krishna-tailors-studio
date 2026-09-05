@@ -10,33 +10,258 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as BookMeasurementRouteImport } from './routes/book-measurement'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CustomOrderRouteImport } from './routes/custom-order'
+import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as GalleryRouteImport } from './routes/gallery'
+import { Route as HowItWorksRouteImport } from './routes/how-it-works'
+import { Route as MeasurementGuideRouteImport } from './routes/measurement-guide'
+import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as RefundCancellationRouteImport } from './routes/refund-cancellation'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as WeddingBridalRouteImport } from './routes/wedding-bridal'
+import { Route as ServicesIndexRouteImport } from './routes/services.index'
+import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BookMeasurementRoute = BookMeasurementRouteImport.update({
+  id: '/book-measurement',
+  path: '/book-measurement',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CustomOrderRoute = CustomOrderRouteImport.update({
+  id: '/custom-order',
+  path: '/custom-order',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GalleryRoute = GalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HowItWorksRoute = HowItWorksRouteImport.update({
+  id: '/how-it-works',
+  path: '/how-it-works',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MeasurementGuideRoute = MeasurementGuideRouteImport.update({
+  id: '/measurement-guide',
+  path: '/measurement-guide',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RefundCancellationRoute = RefundCancellationRouteImport.update({
+  id: '/refund-cancellation',
+  path: '/refund-cancellation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WeddingBridalRoute = WeddingBridalRouteImport.update({
+  id: '/wedding-bridal',
+  path: '/wedding-bridal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesIndexRoute = ServicesIndexRouteImport.update({
+  id: '/services/',
+  path: '/services/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesSlugRoute = ServicesSlugRouteImport.update({
+  id: '/services/$slug',
+  path: '/services/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
+  '/auth': typeof AuthRoute
+  '/book-measurement': typeof BookMeasurementRoute
+  '/contact': typeof ContactRoute
+  '/custom-order': typeof CustomOrderRoute
+  '/dashboard': typeof DashboardRoute
+  '/gallery': typeof GalleryRoute
+  '/how-it-works': typeof HowItWorksRoute
+  '/measurement-guide': typeof MeasurementGuideRoute
+  '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
+  '/refund-cancellation': typeof RefundCancellationRoute
+  '/terms': typeof TermsRoute
+  '/wedding-bridal': typeof WeddingBridalRoute
+  '/services/$slug': typeof ServicesSlugRoute
+  '/services/': typeof ServicesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
+  '/auth': typeof AuthRoute
+  '/book-measurement': typeof BookMeasurementRoute
+  '/contact': typeof ContactRoute
+  '/custom-order': typeof CustomOrderRoute
+  '/dashboard': typeof DashboardRoute
+  '/gallery': typeof GalleryRoute
+  '/how-it-works': typeof HowItWorksRoute
+  '/measurement-guide': typeof MeasurementGuideRoute
+  '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
+  '/refund-cancellation': typeof RefundCancellationRoute
+  '/terms': typeof TermsRoute
+  '/wedding-bridal': typeof WeddingBridalRoute
+  '/services/$slug': typeof ServicesSlugRoute
+  '/services': typeof ServicesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
+  '/auth': typeof AuthRoute
+  '/book-measurement': typeof BookMeasurementRoute
+  '/contact': typeof ContactRoute
+  '/custom-order': typeof CustomOrderRoute
+  '/dashboard': typeof DashboardRoute
+  '/gallery': typeof GalleryRoute
+  '/how-it-works': typeof HowItWorksRoute
+  '/measurement-guide': typeof MeasurementGuideRoute
+  '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
+  '/refund-cancellation': typeof RefundCancellationRoute
+  '/terms': typeof TermsRoute
+  '/wedding-bridal': typeof WeddingBridalRoute
+  '/services/$slug': typeof ServicesSlugRoute
+  '/services/': typeof ServicesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/auth'
+    | '/book-measurement'
+    | '/contact'
+    | '/custom-order'
+    | '/dashboard'
+    | '/gallery'
+    | '/how-it-works'
+    | '/measurement-guide'
+    | '/pricing'
+    | '/privacy'
+    | '/refund-cancellation'
+    | '/terms'
+    | '/wedding-bridal'
+    | '/services/$slug'
+    | '/services/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/auth'
+    | '/book-measurement'
+    | '/contact'
+    | '/custom-order'
+    | '/dashboard'
+    | '/gallery'
+    | '/how-it-works'
+    | '/measurement-guide'
+    | '/pricing'
+    | '/privacy'
+    | '/refund-cancellation'
+    | '/terms'
+    | '/wedding-bridal'
+    | '/services/$slug'
+    | '/services'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/auth'
+    | '/book-measurement'
+    | '/contact'
+    | '/custom-order'
+    | '/dashboard'
+    | '/gallery'
+    | '/how-it-works'
+    | '/measurement-guide'
+    | '/pricing'
+    | '/privacy'
+    | '/refund-cancellation'
+    | '/terms'
+    | '/wedding-bridal'
+    | '/services/$slug'
+    | '/services/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRoute
+  AuthRoute: typeof AuthRoute
+  BookMeasurementRoute: typeof BookMeasurementRoute
+  ContactRoute: typeof ContactRoute
+  CustomOrderRoute: typeof CustomOrderRoute
+  DashboardRoute: typeof DashboardRoute
+  GalleryRoute: typeof GalleryRoute
+  HowItWorksRoute: typeof HowItWorksRoute
+  MeasurementGuideRoute: typeof MeasurementGuideRoute
+  PricingRoute: typeof PricingRoute
+  PrivacyRoute: typeof PrivacyRoute
+  RefundCancellationRoute: typeof RefundCancellationRoute
+  TermsRoute: typeof TermsRoute
+  WeddingBridalRoute: typeof WeddingBridalRoute
+  ServicesSlugRoute: typeof ServicesSlugRoute
+  ServicesIndexRoute: typeof ServicesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +273,147 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/book-measurement': {
+      id: '/book-measurement'
+      path: '/book-measurement'
+      fullPath: '/book-measurement'
+      preLoaderRoute: typeof BookMeasurementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/custom-order': {
+      id: '/custom-order'
+      path: '/custom-order'
+      fullPath: '/custom-order'
+      preLoaderRoute: typeof CustomOrderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gallery': {
+      id: '/gallery'
+      path: '/gallery'
+      fullPath: '/gallery'
+      preLoaderRoute: typeof GalleryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/how-it-works': {
+      id: '/how-it-works'
+      path: '/how-it-works'
+      fullPath: '/how-it-works'
+      preLoaderRoute: typeof HowItWorksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/measurement-guide': {
+      id: '/measurement-guide'
+      path: '/measurement-guide'
+      fullPath: '/measurement-guide'
+      preLoaderRoute: typeof MeasurementGuideRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/refund-cancellation': {
+      id: '/refund-cancellation'
+      path: '/refund-cancellation'
+      fullPath: '/refund-cancellation'
+      preLoaderRoute: typeof RefundCancellationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wedding-bridal': {
+      id: '/wedding-bridal'
+      path: '/wedding-bridal'
+      fullPath: '/wedding-bridal'
+      preLoaderRoute: typeof WeddingBridalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/': {
+      id: '/services/'
+      path: '/services'
+      fullPath: '/services/'
+      preLoaderRoute: typeof ServicesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/$slug': {
+      id: '/services/$slug'
+      path: '/services/$slug'
+      fullPath: '/services/$slug'
+      preLoaderRoute: typeof ServicesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  AdminRoute: AdminRoute,
+  AuthRoute: AuthRoute,
+  BookMeasurementRoute: BookMeasurementRoute,
+  ContactRoute: ContactRoute,
+  CustomOrderRoute: CustomOrderRoute,
+  DashboardRoute: DashboardRoute,
+  GalleryRoute: GalleryRoute,
+  HowItWorksRoute: HowItWorksRoute,
+  MeasurementGuideRoute: MeasurementGuideRoute,
+  PricingRoute: PricingRoute,
+  PrivacyRoute: PrivacyRoute,
+  RefundCancellationRoute: RefundCancellationRoute,
+  TermsRoute: TermsRoute,
+  WeddingBridalRoute: WeddingBridalRoute,
+  ServicesSlugRoute: ServicesSlugRoute,
+  ServicesIndexRoute: ServicesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

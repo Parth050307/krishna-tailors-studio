@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.booked_slots(DATE) FROM anon;
