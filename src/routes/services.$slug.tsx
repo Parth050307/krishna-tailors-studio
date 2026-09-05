@@ -106,9 +106,7 @@ function ServiceDetail() {
 
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild size="lg">
-                <Link to="/custom-order" search={{ service: service.slug }}>
-                  Order this service
-                </Link>
+                <Link to="/custom-order">Order this service</Link>
               </Button>
               <Button asChild size="lg" variant="outline">
                 <Link to="/book-measurement">Book measurement</Link>

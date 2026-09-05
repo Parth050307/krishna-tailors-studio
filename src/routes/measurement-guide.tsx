@@ -39,8 +39,32 @@ const TIPS = [
   "Use one unit throughout — either inches or centimetres, never a mix.",
 ];
 
+function GarmentFields({ garment }: { garment: string }) {
+  const { data: fields } = useMeasurementFields(garment);
+  const list = fields ?? [];
+  if (!list.length) {
+    return <p className="text-sm text-muted-foreground">Loading fields…</p>;
+  }
+  return (
+    <ul className="space-y-4">
+      {list.map((f) => (
+        <li key={f.id}>
+          <p className="font-medium text-primary">
+            {f.label}
+            {f.required ? (
+              <span className="ml-2 text-xs text-muted-foreground">required</span>
+            ) : null}
+          </p>
+          <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+            {f.instruction}
+          </p>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 function MeasurementGuide() {
-  const { data: fields } = useMeasurementFields();
 
   return (
     <SiteLayout>
@@ -68,36 +92,16 @@ function MeasurementGuide() {
           subtitle="Every garment type uses its own measurement sheet. Expand the one you are ordering."
         >
           <Accordion type="single" collapsible className="mx-auto max-w-3xl">
-            {GARMENT_TYPES.map((garment) => {
-              const list = (fields ?? []).filter((f) => f.garment_type === garment.value);
-              if (!list.length) return null;
-              return (
-                <AccordionItem key={garment.value} value={garment.value}>
-                  <AccordionTrigger className="font-display text-lg text-primary">
-                    {garment.label}
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <ul className="space-y-4">
-                      {list.map((f) => (
-                        <li key={f.id}>
-                          <p className="font-medium text-primary">
-                            {f.label}
-                            {f.is_required ? (
-                              <span className="ml-2 text-xs text-muted-foreground">
-                                required
-                              </span>
-                            ) : null}
-                          </p>
-                          <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                            {f.instruction}
-                          </p>
-                        </li>
-                      ))}
-                    </ul>
-                  </AccordionContent>
-                </AccordionItem>
-              );
-            })}
+            {GARMENT_TYPES.map((garment) => (
+              <AccordionItem key={garment.value} value={garment.value}>
+                <AccordionTrigger className="font-display text-lg text-primary">
+                  {garment.label}
+                </AccordionTrigger>
+                <AccordionContent>
+                  <GarmentFields garment={garment.value} />
+                </AccordionContent>
+              </AccordionItem>
+            ))}
           </Accordion>
         </Section>
       </div>
