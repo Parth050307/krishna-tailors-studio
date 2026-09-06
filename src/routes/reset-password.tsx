@@ -118,7 +118,18 @@ function ResetPasswordPage() {
     setTimeout(() => navigate({ to: "/dashboard" }), 1200);
   };
 
-  if (!valid) {
+  if (state === "checking") {
+    return (
+      <SiteLayout>
+        <Section className="max-w-lg text-center">
+          <p className="text-sm text-muted-foreground">Checking your reset link…</p>
+        </Section>
+      </SiteLayout>
+    );
+  }
+
+  if (state === "invalid") {
+
     return (
       <SiteLayout>
         <Section className="max-w-lg text-center">
