@@ -119,7 +119,7 @@ function Admin() {
     status: OrderStatus,
   ) => {
     const { error } = await supabase.from("orders").update({ status }).eq("id", order.id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     await supabase.from("order_status_history").insert({
       order_id: order.id,
       status,
@@ -143,14 +143,14 @@ function Admin() {
       .from("orders")
       .update({ assigned_staff_id: staffId === "none" ? null : staffId })
       .eq("id", orderId);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success(staffId === "none" ? "Unassigned" : `Assigned to ${staffName[staffId]}`);
     qc.invalidateQueries({ queryKey: ["admin-orders"] });
   };
 
   const setPayment = async (orderId: string, payment_status: "PENDING" | "PAID" | "REFUNDED") => {
     const { error } = await supabase.from("orders").update({ payment_status }).eq("id", orderId);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success(`Payment marked ${PAYMENT_LABEL[payment_status]}`);
     qc.invalidateQueries({ queryKey: ["admin-orders"] });
   };
@@ -161,7 +161,7 @@ function Admin() {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .update({ status: status as any })
       .eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success(`Appointment ${status.toLowerCase()}`);
     qc.invalidateQueries({ queryKey: ["admin-appointments"] });
   };
@@ -173,11 +173,11 @@ function Admin() {
         .delete()
         .eq("user_id", userId)
         .eq("role", role);
-      if (error) return toast.error(error.message);
+      if (error) { toast.error(error.message); return; }
       toast.success(`Removed ${ROLE_LABEL[role]}`);
     } else {
       const { error } = await supabase.from("user_roles").insert({ user_id: userId, role });
-      if (error) return toast.error(error.message);
+      if (error) { toast.error(error.message); return; }
       toast.success(`Granted ${ROLE_LABEL[role]}`);
     }
     qc.invalidateQueries({ queryKey: ["admin-people"] });
@@ -417,7 +417,7 @@ function AddStaffForm({ onDone }: { onDone: () => void }) {
   const [busy, setBusy] = useState(false);
 
   const submit = async () => {
-    if (!name.trim()) return toast.error("Add a name for the team member.");
+    if (!name.trim()) { toast.error("Add a name for the team member."); return; }
     setBusy(true);
     const { error } = await supabase.from("staff").insert({
       name: name.trim(),
@@ -427,7 +427,7 @@ function AddStaffForm({ onDone }: { onDone: () => void }) {
       active: true,
     });
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success(`${name.trim()} added to the team`);
     setName("");
     setPhone("");
