@@ -494,7 +494,28 @@ function AddStaffForm({ people, onDone }: { people: PersonOption[]; onDone: () =
             onChange={(e) => setSpecialization(e.target.value)}
           />
         </div>
+        <div>
+          <Label>Linked login account</Label>
+          <Select value={accountId} onValueChange={setAccountId}>
+            <SelectTrigger>
+              <SelectValue placeholder="Not linked" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="none">Not linked</SelectItem>
+              {people.map((p) => (
+                <SelectItem key={p.id} value={p.id}>
+                  {p.full_name || "Unnamed account"}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
+      <p className="mt-3 text-xs text-muted-foreground">
+        Linking an account gives that login the chosen permissions, so tailors see the orders
+        assigned to them.
+      </p>
+
       <Button className="mt-5" onClick={submit} disabled={busy}>
         {busy ? "Adding…" : "Add team member"}
       </Button>
