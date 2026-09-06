@@ -240,6 +240,40 @@ function AuthPage() {
             Continue with Google
           </Button>
         </div>
+
+        <Dialog open={resetOpen} onOpenChange={setResetOpen}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Reset your password</DialogTitle>
+              <DialogDescription>
+                Enter your email and we’ll send a secure link to set a new password.
+              </DialogDescription>
+            </DialogHeader>
+            {resetSent ? (
+              <div className="py-4 text-center text-sm text-muted-foreground">
+                If an account exists for <strong>{resetEmail}</strong>, a reset link has been sent.
+                Check your inbox and spam folder.
+              </div>
+            ) : (
+              <form onSubmit={doReset} className="space-y-4 py-2">
+                <div>
+                  <Label htmlFor="reset-email">Email</Label>
+                  <Input
+                    id="reset-email"
+                    type="email"
+                    value={resetEmail}
+                    onChange={(e) => setResetEmail(e.target.value)}
+                    className="mt-2"
+                    required
+                  />
+                </div>
+                <Button type="submit" className="w-full" disabled={busy}>
+                  Send reset link
+                </Button>
+              </form>
+            )}
+          </DialogContent>
+        </Dialog>
       </Section>
     </SiteLayout>
   );
