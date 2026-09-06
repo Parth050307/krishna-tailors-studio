@@ -33,16 +33,68 @@ function ResetPasswordPage() {
   const [busy, setBusy] = useState(false);
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
-  const [valid, setValid] = useState(false);
+  const [state, setState] = useState<"checking" | "ready" | "invalid">("checking");
 
   useEffect(() => {
-    const hash = window.location.hash;
-    if (hash.includes("type=recovery") || hash.includes("access_token")) {
-      setValid(true);
-    } else {
-      setValid(false);
-    }
+    let cancelled = false;
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+      if (cancelled) return;
+      if (event === "PASSWORD_RECOVERY" || session) setState("ready");
+    });
+
+    const run = async () => {
+      const url = new URL(window.location.href);
+      const hash = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+
+      // Error carried back from the email link
+      if (url.searchParams.get("error") || hash.get("error")) {
+        if (!cancelled) setState("invalid");
+        return;
+      }
+
+      // PKCE style: ?code=...
+      const code = url.searchParams.get("code");
+      if (code) {
+        const { error } = await supabase.auth.exchangeCodeForSession(code);
+        if (!cancelled) setState(error ? "invalid" : "ready");
+        return;
+      }
+
+      // token_hash style: ?token_hash=...&type=recovery
+      const tokenHash = url.searchParams.get("token_hash") ?? hash.get("token_hash");
+      if (tokenHash) {
+        const { error } = await supabase.auth.verifyOtp({
+          type: "recovery",
+          token_hash: tokenHash,
+        });
+        if (!cancelled) setState(error ? "invalid" : "ready");
+        return;
+      }
+
+      // Implicit style: #access_token=...&refresh_token=...
+      const accessToken = hash.get("access_token");
+      const refreshToken = hash.get("refresh_token");
+      if (accessToken && refreshToken) {
+        const { error } = await supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken,
+        });
+        if (!cancelled) setState(error ? "invalid" : "ready");
+        return;
+      }
+
+      // Already signed in via the recovery link
+      const { data } = await supabase.auth.getSession();
+      if (!cancelled) setState(data.session ? "ready" : "invalid");
+    };
+
+    void run();
+    return () => {
+      cancelled = true;
+      sub.subscription.unsubscribe();
+    };
   }, []);
+
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,7 +118,18 @@ function ResetPasswordPage() {
     setTimeout(() => navigate({ to: "/dashboard" }), 1200);
   };
 
-  if (!valid) {
+  if (state === "checking") {
+    return (
+      <SiteLayout>
+        <Section className="max-w-lg text-center">
+          <p className="text-sm text-muted-foreground">Checking your reset link…</p>
+        </Section>
+      </SiteLayout>
+    );
+  }
+
+  if (state === "invalid") {
+
     return (
       <SiteLayout>
         <Section className="max-w-lg text-center">
