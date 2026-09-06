@@ -418,31 +418,46 @@ function Admin() {
   );
 }
 
-function AddStaffForm({ onDone }: { onDone: () => void }) {
+type PersonOption = { id: string; full_name: string | null; roles: AppRole[] };
+
+function AddStaffForm({ people, onDone }: { people: PersonOption[]; onDone: () => void }) {
   const [name, setName] = useState("");
   const [role, setRole] = useState<AppRole>("TAILOR");
   const [phone, setPhone] = useState("");
   const [specialization, setSpecialization] = useState("");
+  const [accountId, setAccountId] = useState<string>("none");
   const [busy, setBusy] = useState(false);
 
   const submit = async () => {
     if (!name.trim()) { toast.error("Add a name for the team member."); return; }
     setBusy(true);
+    const linkedId = accountId === "none" ? null : accountId;
     const { error } = await supabase.from("staff").insert({
       name: name.trim(),
       role,
       phone: phone.trim() || null,
       specialization: specialization.trim() || null,
+      user_id: linkedId,
       active: true,
     });
+    if (!error && linkedId) {
+      const { error: roleError } = await supabase
+        .from("user_roles")
+        .insert({ user_id: linkedId, role });
+      if (roleError && !roleError.message.includes("duplicate")) {
+        toast.error(roleError.message);
+      }
+    }
     setBusy(false);
     if (error) { toast.error(error.message); return; }
     toast.success(`${name.trim()} added to the team`);
     setName("");
     setPhone("");
     setSpecialization("");
+    setAccountId("none");
     onDone();
   };
+
 
   return (
     <div className="card-luxe rounded-sm p-6">
