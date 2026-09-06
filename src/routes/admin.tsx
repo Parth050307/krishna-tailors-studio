@@ -343,7 +343,16 @@ function Admin() {
           </TabsContent>
 
           <TabsContent value="team" className="mt-6 space-y-10">
-            {isAdmin && <AddStaffForm onDone={() => qc.invalidateQueries({ queryKey: ["admin-staff"] })} />}
+            {isAdmin && (
+              <AddStaffForm
+                people={people ?? []}
+                onDone={() => {
+                  qc.invalidateQueries({ queryKey: ["admin-staff"] });
+                  qc.invalidateQueries({ queryKey: ["admin-people"] });
+                }}
+              />
+            )}
+
 
             <div>
               <h3 className="font-display text-xl text-primary">Studio team</h3>
