@@ -42,6 +42,9 @@ const passwordSchema = z.string().min(8, "Password must be at least 8 characters
 function AuthPage() {
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
+  const [resetOpen, setResetOpen] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetSent, setResetSent] = useState(false);
   const [login, setLogin] = useState({ email: "", password: "" });
   const [signup, setSignup] = useState({ name: "", phone: "", email: "", password: "" });
 
