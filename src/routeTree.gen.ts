@@ -23,6 +23,7 @@ import { Route as MeasurementGuideRouteImport } from './routes/measurement-guide
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as RefundCancellationRouteImport } from './routes/refund-cancellation'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as WeddingBridalRouteImport } from './routes/wedding-bridal'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
@@ -98,6 +99,11 @@ const RefundCancellationRoute = RefundCancellationRouteImport.update({
   path: '/refund-cancellation',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -134,6 +140,7 @@ export interface FileRoutesByFullPath {
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/refund-cancellation': typeof RefundCancellationRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
   '/wedding-bridal': typeof WeddingBridalRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -154,6 +161,7 @@ export interface FileRoutesByTo {
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/refund-cancellation': typeof RefundCancellationRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
   '/wedding-bridal': typeof WeddingBridalRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -175,6 +183,7 @@ export interface FileRoutesById {
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/refund-cancellation': typeof RefundCancellationRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
   '/wedding-bridal': typeof WeddingBridalRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -197,6 +206,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/privacy'
     | '/refund-cancellation'
+    | '/reset-password'
     | '/terms'
     | '/wedding-bridal'
     | '/services/$slug'
@@ -217,6 +227,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/privacy'
     | '/refund-cancellation'
+    | '/reset-password'
     | '/terms'
     | '/wedding-bridal'
     | '/services/$slug'
@@ -237,6 +248,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/privacy'
     | '/refund-cancellation'
+    | '/reset-password'
     | '/terms'
     | '/wedding-bridal'
     | '/services/$slug'
@@ -258,6 +270,7 @@ export interface RootRouteChildren {
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
   RefundCancellationRoute: typeof RefundCancellationRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   TermsRoute: typeof TermsRoute
   WeddingBridalRoute: typeof WeddingBridalRoute
   ServicesSlugRoute: typeof ServicesSlugRoute
@@ -364,6 +377,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RefundCancellationRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -410,6 +430,7 @@ const rootRouteChildren: RootRouteChildren = {
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
   RefundCancellationRoute: RefundCancellationRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   TermsRoute: TermsRoute,
   WeddingBridalRoute: WeddingBridalRoute,
   ServicesSlugRoute: ServicesSlugRoute,
