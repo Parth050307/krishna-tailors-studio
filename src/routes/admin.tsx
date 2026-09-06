@@ -343,7 +343,16 @@ function Admin() {
           </TabsContent>
 
           <TabsContent value="team" className="mt-6 space-y-10">
-            {isAdmin && <AddStaffForm onDone={() => qc.invalidateQueries({ queryKey: ["admin-staff"] })} />}
+            {isAdmin && (
+              <AddStaffForm
+                people={people ?? []}
+                onDone={() => {
+                  qc.invalidateQueries({ queryKey: ["admin-staff"] });
+                  qc.invalidateQueries({ queryKey: ["admin-people"] });
+                }}
+              />
+            )}
+
 
             <div>
               <h3 className="font-display text-xl text-primary">Studio team</h3>
@@ -409,31 +418,46 @@ function Admin() {
   );
 }
 
-function AddStaffForm({ onDone }: { onDone: () => void }) {
+type PersonOption = { id: string; full_name: string | null; roles: AppRole[] };
+
+function AddStaffForm({ people, onDone }: { people: PersonOption[]; onDone: () => void }) {
   const [name, setName] = useState("");
   const [role, setRole] = useState<AppRole>("TAILOR");
   const [phone, setPhone] = useState("");
   const [specialization, setSpecialization] = useState("");
+  const [accountId, setAccountId] = useState<string>("none");
   const [busy, setBusy] = useState(false);
 
   const submit = async () => {
     if (!name.trim()) { toast.error("Add a name for the team member."); return; }
     setBusy(true);
+    const linkedId = accountId === "none" ? null : accountId;
     const { error } = await supabase.from("staff").insert({
       name: name.trim(),
       role,
       phone: phone.trim() || null,
       specialization: specialization.trim() || null,
+      user_id: linkedId,
       active: true,
     });
+    if (!error && linkedId) {
+      const { error: roleError } = await supabase
+        .from("user_roles")
+        .insert({ user_id: linkedId, role });
+      if (roleError && !roleError.message.includes("duplicate")) {
+        toast.error(roleError.message);
+      }
+    }
     setBusy(false);
     if (error) { toast.error(error.message); return; }
     toast.success(`${name.trim()} added to the team`);
     setName("");
     setPhone("");
     setSpecialization("");
+    setAccountId("none");
     onDone();
   };
+
 
   return (
     <div className="card-luxe rounded-sm p-6">
@@ -470,7 +494,28 @@ function AddStaffForm({ onDone }: { onDone: () => void }) {
             onChange={(e) => setSpecialization(e.target.value)}
           />
         </div>
+        <div>
+          <Label>Linked login account</Label>
+          <Select value={accountId} onValueChange={setAccountId}>
+            <SelectTrigger>
+              <SelectValue placeholder="Not linked" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="none">Not linked</SelectItem>
+              {people.map((p) => (
+                <SelectItem key={p.id} value={p.id}>
+                  {p.full_name || "Unnamed account"}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
+      <p className="mt-3 text-xs text-muted-foreground">
+        Linking an account gives that login the chosen permissions, so tailors see the orders
+        assigned to them.
+      </p>
+
       <Button className="mt-5" onClick={submit} disabled={busy}>
         {busy ? "Adding…" : "Add team member"}
       </Button>

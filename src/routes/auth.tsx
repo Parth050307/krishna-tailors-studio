@@ -83,7 +83,7 @@ function AuthPage() {
       return;
     }
     setBusy(true);
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email: email.data,
       password: pass.data,
       options: {
@@ -96,9 +96,14 @@ function AuthPage() {
       toast.error(error.message);
       return;
     }
+    if (!data.session) {
+      toast.success("Account created. Please check your email to confirm your address, then log in.");
+      return;
+    }
     toast.success("Account created. You can start your first order.");
     navigate({ to: "/dashboard" });
   };
+
 
   const google = async () => {
     const result = await lovable.auth.signInWithOAuth("google", {
