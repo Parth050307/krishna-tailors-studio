@@ -169,6 +169,17 @@ function AuthPage() {
                   className="mt-2"
                 />
               </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setResetOpen(true);
+                  setResetEmail(login.email);
+                  setResetSent(false);
+                }}
+                className="self-start text-sm text-primary underline-offset-2 hover:underline"
+              >
+                Forgot password?
+              </button>
               <Button type="submit" size="lg" className="w-full" disabled={busy}>
                 Login
               </Button>
