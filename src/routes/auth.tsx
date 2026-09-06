@@ -7,6 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 
@@ -35,6 +42,9 @@ const passwordSchema = z.string().min(8, "Password must be at least 8 characters
 function AuthPage() {
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
+  const [resetOpen, setResetOpen] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetSent, setResetSent] = useState(false);
   const [login, setLogin] = useState({ email: "", password: "" });
   const [signup, setSignup] = useState({ name: "", phone: "", email: "", password: "" });
 
@@ -102,6 +112,26 @@ function AuthPage() {
     navigate({ to: "/dashboard" });
   };
 
+  const doReset = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const email = emailSchema.safeParse(resetEmail);
+    if (!email.success) {
+      toast.error(email.error.issues[0]!.message);
+      return;
+    }
+    setBusy(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(email.data, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setBusy(false);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    setResetSent(true);
+    toast.success("Password reset link sent. Check your inbox.");
+  };
+
   return (
     <SiteLayout>
       <Section className="max-w-lg">
@@ -139,6 +169,17 @@ function AuthPage() {
                   className="mt-2"
                 />
               </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setResetOpen(true);
+                  setResetEmail(login.email);
+                  setResetSent(false);
+                }}
+                className="self-start text-sm text-primary underline-offset-2 hover:underline"
+              >
+                Forgot password?
+              </button>
               <Button type="submit" size="lg" className="w-full" disabled={busy}>
                 Login
               </Button>
@@ -199,6 +240,40 @@ function AuthPage() {
             Continue with Google
           </Button>
         </div>
+
+        <Dialog open={resetOpen} onOpenChange={setResetOpen}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Reset your password</DialogTitle>
+              <DialogDescription>
+                Enter your email and we’ll send a secure link to set a new password.
+              </DialogDescription>
+            </DialogHeader>
+            {resetSent ? (
+              <div className="py-4 text-center text-sm text-muted-foreground">
+                If an account exists for <strong>{resetEmail}</strong>, a reset link has been sent.
+                Check your inbox and spam folder.
+              </div>
+            ) : (
+              <form onSubmit={doReset} className="space-y-4 py-2">
+                <div>
+                  <Label htmlFor="reset-email">Email</Label>
+                  <Input
+                    id="reset-email"
+                    type="email"
+                    value={resetEmail}
+                    onChange={(e) => setResetEmail(e.target.value)}
+                    className="mt-2"
+                    required
+                  />
+                </div>
+                <Button type="submit" className="w-full" disabled={busy}>
+                  Send reset link
+                </Button>
+              </form>
+            )}
+          </DialogContent>
+        </Dialog>
       </Section>
     </SiteLayout>
   );
