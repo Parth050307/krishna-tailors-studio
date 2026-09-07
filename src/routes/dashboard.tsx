@@ -95,7 +95,9 @@ function Dashboard() {
                           {inr(order.total)}
                         </span>
                       </div>
+                      <OrderReferenceFiles orderId={order.id} />
                     </div>
+
                   );
                 })}
               </div>
