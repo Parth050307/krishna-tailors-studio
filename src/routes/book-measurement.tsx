@@ -56,6 +56,8 @@ function BookMeasurement() {
   });
   const [busy, setBusy] = useState(false);
   const { data: booked } = useBookedSlots(form.scheduled_date || undefined);
+  const queryClient = useQueryClient();
+
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
