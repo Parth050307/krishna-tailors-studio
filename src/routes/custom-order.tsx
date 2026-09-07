@@ -156,11 +156,25 @@ function CustomOrder() {
         continue;
       }
       try {
-        await storage.upload(user.id, file);
+        const stored = await storage.upload(user.id, file);
+        const { error: uploadRowError } = await supabase.from("order_uploads").insert({
+          order_id: order.id,
+          user_id: user.id,
+          file_url: stored.url,
+          file_path: stored.path,
+          file_name: stored.name,
+          mime_type: stored.mime,
+          file_size: stored.size,
+        });
+        if (uploadRowError) {
+          await storage.remove(stored.path);
+          toast.info(`Could not attach ${file.name} to your order.`);
+        }
       } catch {
         toast.info(`Could not upload ${file.name}`);
       }
     }
+
 
     setBusy(false);
     toast.success(`Order ${order.order_number} placed. Test payment recorded.`);
