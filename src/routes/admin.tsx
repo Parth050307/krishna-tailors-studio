@@ -26,6 +26,8 @@ import {
   type OrderStatus,
 } from "@/lib/brand";
 import { inr, shortDate } from "@/lib/format";
+import { OrderReferenceFiles } from "@/components/site/OrderReferenceFiles";
+
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
