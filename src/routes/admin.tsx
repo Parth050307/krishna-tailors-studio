@@ -303,7 +303,9 @@ function Admin() {
                     </Button>
                   )}
                 </div>
+                <OrderReferenceFiles orderId={o.id} />
               </div>
+
             ))}
             {(orders ?? []).length === 0 && (
               <p className="text-sm text-muted-foreground">No orders yet.</p>
