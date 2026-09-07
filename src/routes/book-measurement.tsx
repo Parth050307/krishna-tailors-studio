@@ -88,13 +88,19 @@ function BookMeasurement() {
     });
     setBusy(false);
     if (error) {
-      toast.error(
-        error.code === "23505"
-          ? "That slot is already booked. Please choose another time."
-          : error.message,
-      );
+      const clash =
+        error.code === "23505" ||
+        /duplicate key|already exists|unique constraint/i.test(error.message ?? "");
+      if (clash) {
+        await queryClient.invalidateQueries({ queryKey: ["booked-slots", form.scheduled_date] });
+        setForm((prev) => ({ ...prev, slot: "" }));
+        toast.error("That slot was just booked by someone else. Please choose another time.");
+      } else {
+        toast.error(error.message);
+      }
       return;
     }
+
     toast.success("Appointment requested. We will confirm shortly.");
     navigate({ to: "/dashboard" });
   };
