@@ -1,5 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+
 import { toast } from "sonner";
 import { z } from "zod";
 import { SiteLayout, PageHero, Section } from "@/components/site/SiteLayout";
@@ -56,6 +58,8 @@ function BookMeasurement() {
   });
   const [busy, setBusy] = useState(false);
   const { data: booked } = useBookedSlots(form.scheduled_date || undefined);
+  const queryClient = useQueryClient();
+
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -88,13 +92,19 @@ function BookMeasurement() {
     });
     setBusy(false);
     if (error) {
-      toast.error(
-        error.code === "23505"
-          ? "That slot is already booked. Please choose another time."
-          : error.message,
-      );
+      const clash =
+        error.code === "23505" ||
+        /duplicate key|already exists|unique constraint/i.test(error.message ?? "");
+      if (clash) {
+        await queryClient.invalidateQueries({ queryKey: ["booked-slots", form.scheduled_date] });
+        setForm((prev) => ({ ...prev, slot: "" }));
+        toast.error("That slot was just booked by someone else. Please choose another time.");
+      } else {
+        toast.error(error.message);
+      }
       return;
     }
+
     toast.success("Appointment requested. We will confirm shortly.");
     navigate({ to: "/dashboard" });
   };

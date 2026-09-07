@@ -5,6 +5,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { useMyOrders, useMyAppointments, useNotifications } from "@/lib/queries";
 import { inr, shortDate } from "@/lib/format";
 import { ORDER_FLOW, STATUS_LABEL, PAYMENT_LABEL } from "@/lib/brand";
+import { OrderReferenceFiles } from "@/components/site/OrderReferenceFiles";
+
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
@@ -95,7 +97,9 @@ function Dashboard() {
                           {inr(order.total)}
                         </span>
                       </div>
+                      <OrderReferenceFiles orderId={order.id} />
                     </div>
+
                   );
                 })}
               </div>

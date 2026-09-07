@@ -26,6 +26,8 @@ import {
   type OrderStatus,
 } from "@/lib/brand";
 import { inr, shortDate } from "@/lib/format";
+import { OrderReferenceFiles } from "@/components/site/OrderReferenceFiles";
+
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -303,7 +305,9 @@ function Admin() {
                     </Button>
                   )}
                 </div>
+                <OrderReferenceFiles orderId={o.id} />
               </div>
+
             ))}
             {(orders ?? []).length === 0 && (
               <p className="text-sm text-muted-foreground">No orders yet.</p>
