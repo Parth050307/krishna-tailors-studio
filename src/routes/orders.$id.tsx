@@ -206,8 +206,8 @@ function OrderDetail() {
               </p>
               {(() => {
                 const snap = (order.measurements_snapshot ?? {}) as Record<string, unknown>;
-                const values = (snap.values ?? snap) as Record<string, unknown>;
-                const unit = (snap.unit as string) ?? "in";
+                const values = (snap['values'] ?? snap) as Record<string, unknown>;
+                const unit = (snap['unit'] as string) ?? "in";
                 const entries = Object.entries(values ?? {}).filter(
                   ([, v]) => typeof v === "number" || typeof v === "string",
                 );
