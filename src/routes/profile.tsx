@@ -50,7 +50,7 @@ function ProfilePage() {
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [city, setCity] = useState("");
-  const [unit, setUnit] = useState<"INCHES" | "CM">("INCHES");
+  const [unit, setUnit] = useState<"in" | "cm">("in");
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -58,7 +58,7 @@ function ProfilePage() {
     setFullName(profile.full_name ?? "");
     setPhone(profile.phone ?? "");
     setCity(profile.city ?? "");
-    setUnit(profile.preferred_unit === "CM" ? "CM" : "INCHES");
+    setUnit(profile.preferred_unit === "cm" ? "cm" : "in");
   }, [profile]);
 
   if (loading) {
@@ -165,13 +165,13 @@ function ProfilePage() {
               </div>
               <div className="grid gap-2">
                 <Label>Preferred measurement unit</Label>
-                <Select value={unit} onValueChange={(v) => setUnit(v as "INCHES" | "CM")}>
+                <Select value={unit} onValueChange={(v) => setUnit(v as "in" | "cm")}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="INCHES">Inches</SelectItem>
-                    <SelectItem value="CM">Centimetres</SelectItem>
+                    <SelectItem value="in">Inches</SelectItem>
+                    <SelectItem value="cm">Centimetres</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
