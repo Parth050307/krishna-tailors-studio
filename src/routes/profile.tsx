@@ -42,7 +42,7 @@ const profileSchema = z.object({
     .optional()
     .or(z.literal("")),
   city: z.string().trim().max(100, "City name is too long.").optional().or(z.literal("")),
-  preferred_unit: z.enum(["INCHES", "CM"]),
+  preferred_unit: z.enum(["in", "cm"]),
 });
 
 function ProfilePage() {
