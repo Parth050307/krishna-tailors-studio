@@ -71,7 +71,12 @@ function Dashboard() {
                 {(orders ?? []).map((order) => {
                   const step = ORDER_FLOW.indexOf(order.status) + 1;
                   return (
-                    <div key={order.id} className="card-luxe rounded-sm p-6">
+                    <Link
+                      key={order.id}
+                      to="/orders/$id"
+                      params={{ id: order.id }}
+                      className="card-luxe block rounded-sm p-6 transition hover:border-gold"
+                    >
                       <div className="flex flex-wrap items-baseline justify-between gap-2">
                         <p className="font-display text-xl text-primary">
                           {order.order_number}
@@ -98,8 +103,10 @@ function Dashboard() {
                         </span>
                       </div>
                       <OrderReferenceFiles orderId={order.id} />
-                    </div>
-
+                      <p className="mt-3 text-xs uppercase tracking-widest text-gold">
+                        View details →
+                      </p>
+                    </Link>
                   );
                 })}
               </div>
