@@ -22,6 +22,7 @@ import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as MeasurementGuideRouteImport } from './routes/measurement-guide'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RefundCancellationRouteImport } from './routes/refund-cancellation'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as TermsRouteImport } from './routes/terms'
@@ -95,6 +96,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RefundCancellationRoute = RefundCancellationRouteImport.update({
   id: '/refund-cancellation',
   path: '/refund-cancellation',
@@ -145,6 +151,7 @@ export interface FileRoutesByFullPath {
   '/measurement-guide': typeof MeasurementGuideRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/profile': typeof ProfileRoute
   '/refund-cancellation': typeof RefundCancellationRoute
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
@@ -167,6 +174,7 @@ export interface FileRoutesByTo {
   '/measurement-guide': typeof MeasurementGuideRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/profile': typeof ProfileRoute
   '/refund-cancellation': typeof RefundCancellationRoute
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
@@ -190,6 +198,7 @@ export interface FileRoutesById {
   '/measurement-guide': typeof MeasurementGuideRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/profile': typeof ProfileRoute
   '/refund-cancellation': typeof RefundCancellationRoute
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
@@ -214,6 +223,7 @@ export interface FileRouteTypes {
     | '/measurement-guide'
     | '/pricing'
     | '/privacy'
+    | '/profile'
     | '/refund-cancellation'
     | '/reset-password'
     | '/terms'
@@ -236,6 +246,7 @@ export interface FileRouteTypes {
     | '/measurement-guide'
     | '/pricing'
     | '/privacy'
+    | '/profile'
     | '/refund-cancellation'
     | '/reset-password'
     | '/terms'
@@ -258,6 +269,7 @@ export interface FileRouteTypes {
     | '/measurement-guide'
     | '/pricing'
     | '/privacy'
+    | '/profile'
     | '/refund-cancellation'
     | '/reset-password'
     | '/terms'
@@ -281,6 +293,7 @@ export interface RootRouteChildren {
   MeasurementGuideRoute: typeof MeasurementGuideRoute
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
+  ProfileRoute: typeof ProfileRoute
   RefundCancellationRoute: typeof RefundCancellationRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   TermsRoute: typeof TermsRoute
@@ -383,6 +396,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/refund-cancellation': {
       id: '/refund-cancellation'
       path: '/refund-cancellation'
@@ -449,6 +469,7 @@ const rootRouteChildren: RootRouteChildren = {
   MeasurementGuideRoute: MeasurementGuideRoute,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
+  ProfileRoute: ProfileRoute,
   RefundCancellationRoute: RefundCancellationRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   TermsRoute: TermsRoute,
