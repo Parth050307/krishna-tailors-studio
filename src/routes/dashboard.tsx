@@ -168,6 +168,9 @@ function Dashboard() {
                 <Button asChild variant="outline">
                   <Link to="/measurement-guide">Measurement guide</Link>
                 </Button>
+                <Button asChild variant="outline">
+                  <Link to="/profile">Profile & settings</Link>
+                </Button>
               </div>
             </div>
           </aside>
