@@ -17,10 +17,19 @@ import {
   SLEEVE_DESIGNS,
   BACK_DESIGNS,
   MEASUREMENT_MODES,
+  toInches,
+  fromInches,
 } from "@/lib/brand";
 import { inr } from "@/lib/format";
-import { useServices, useFabrics, useMeasurementFields, useAddresses } from "@/lib/queries";
+import {
+  useServices,
+  useFabrics,
+  useMeasurementFields,
+  useAddresses,
+  useMeasurementProfiles,
+} from "@/lib/queries";
 import { storage, validateFile } from "@/lib/storage";
+
 
 export const Route = createFileRoute("/custom-order")({
   head: () => ({
@@ -67,6 +76,14 @@ function CustomOrder() {
   const [addressId, setAddressId] = useState("");
   const [discountCode, setDiscountCode] = useState("");
   const [busy, setBusy] = useState(false);
+  const [selectedProfileId, setSelectedProfileId] = useState("");
+  const [edited, setEdited] = useState(false);
+  const [saveAsProfile, setSaveAsProfile] = useState(false);
+  const [newProfileName, setNewProfileName] = useState("");
+  const [savingProfile, setSavingProfile] = useState(false);
+
+  const { data: profiles, isLoading: profilesLoading, refetch: refetchProfiles } =
+    useMeasurementProfiles(user?.id);
 
   useEffect(() => {
     if (addressId || !addresses?.length) return;
@@ -77,6 +94,72 @@ function CustomOrder() {
   const { data: fields } = useMeasurementFields(garment);
   const service = (services ?? []).find((s) => s.id === serviceId);
   const fabric = (fabrics ?? []).find((f) => f.id === fabricId);
+
+  const garmentProfiles = useMemo(
+    () => (profiles ?? []).filter((p) => p.garment_type === garment),
+    [profiles, garment],
+  );
+  const defaultProfile = garmentProfiles.find((p) => p.is_default);
+
+  useEffect(() => {
+    setSelectedProfileId("");
+  }, [garment]);
+
+  const applyProfile = (id: string) => {
+    const profile = garmentProfiles.find((p) => p.id === id);
+    if (!profile) return;
+    const raw = (profile.values ?? {}) as Record<string, number>;
+    const next: Record<string, number> = {};
+    for (const [key, value] of Object.entries(raw)) {
+      const num = Number(value);
+      if (!Number.isFinite(num)) continue;
+      next[key] =
+        profile.unit === unit ? num : Math.round(fromInches(toInches(num, profile.unit), unit) * 100) / 100;
+    }
+    setValues(next);
+    setEdited(false);
+    toast.success(`Loaded measurements from “${profile.name}”. You can still edit any value.`);
+  };
+
+  const saveProfile = async () => {
+    if (!user) return;
+    const name = newProfileName.trim();
+    if (!name) {
+      toast.error("Please give the profile a name.");
+      return;
+    }
+    if (!Object.keys(values).length) {
+      toast.error("Please enter your measurements first.");
+      return;
+    }
+    setSavingProfile(true);
+    const existing = garmentProfiles.find(
+      (p) => p.name.trim().toLowerCase() === name.toLowerCase(),
+    );
+    const payload = { name, garment_type: garment, unit, values };
+    const { data, error } = existing
+      ? await supabase
+          .from("measurement_profiles")
+          .update(payload)
+          .eq("id", existing.id)
+          .select("id")
+          .single()
+      : await supabase
+          .from("measurement_profiles")
+          .insert({ ...payload, user_id: user.id })
+          .select("id")
+          .single();
+    setSavingProfile(false);
+    if (error || !data) {
+      toast.error("Could not save this measurement profile. Please try again.");
+      return;
+    }
+    await refetchProfiles();
+    setSelectedProfileId(data.id);
+    setEdited(false);
+    toast.success(existing ? `Updated profile “${name}”.` : `Saved profile “${name}”.`);
+  };
+
 
   const totals = useMemo(() => {
     const stitching = service?.base_price ?? 0;
