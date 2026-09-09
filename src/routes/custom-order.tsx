@@ -194,7 +194,10 @@ function CustomOrder() {
         fabric_id: fabricSource === "STUDIO" && fabricId ? fabricId : null,
         fabric_meters: fabricSource === "STUDIO" ? meters : 0,
         measurement_mode: mode,
+        measurement_profile_id:
+          mode !== "APPOINTMENT" && selectedProfileId ? selectedProfileId : null,
         measurements_snapshot: { unit, values },
+
         delivery_mode: deliveryMode,
         address_id: deliveryMode === "DELIVERY" && addressId ? addressId : null,
         customer_notes: notes || null,
