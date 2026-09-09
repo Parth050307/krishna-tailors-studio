@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { SiteLayout, PageHero, Section } from "@/components/site/SiteLayout";
 import { Button } from "@/components/ui/button";
@@ -67,6 +67,12 @@ function CustomOrder() {
   const [addressId, setAddressId] = useState("");
   const [discountCode, setDiscountCode] = useState("");
   const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    if (addressId || !addresses?.length) return;
+    const preferred = addresses.find((a) => a.is_default) ?? addresses[0];
+    if (preferred) setAddressId(preferred.id);
+  }, [addresses, addressId]);
 
   const { data: fields } = useMeasurementFields(garment);
   const service = (services ?? []).find((s) => s.id === serviceId);
@@ -480,7 +486,11 @@ function CustomOrder() {
                     ))}
                   </select>
                   <p className="mt-2 text-xs text-muted-foreground">
-                    You can add addresses from your dashboard.
+                    Need a new address?{" "}
+                    <Link to="/addresses" className="text-primary underline">
+                      Manage your addresses
+                    </Link>
+                    .
                   </p>
                 </div>
               ) : null}

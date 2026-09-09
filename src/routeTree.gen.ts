@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AddressesRouteImport } from './routes/addresses'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BookMeasurementRouteImport } from './routes/book-measurement'
@@ -39,6 +40,11 @@ const IndexRoute = IndexRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AddressesRoute = AddressesRouteImport.update({
+  id: '/addresses',
+  path: '/addresses',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -140,6 +146,7 @@ const ServicesSlugRoute = ServicesSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/addresses': typeof AddressesRoute
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/book-measurement': typeof BookMeasurementRoute
@@ -163,6 +170,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/addresses': typeof AddressesRoute
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/book-measurement': typeof BookMeasurementRoute
@@ -187,6 +195,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/addresses': typeof AddressesRoute
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/book-measurement': typeof BookMeasurementRoute
@@ -212,6 +221,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/addresses'
     | '/admin'
     | '/auth'
     | '/book-measurement'
@@ -235,6 +245,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/addresses'
     | '/admin'
     | '/auth'
     | '/book-measurement'
@@ -258,6 +269,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/addresses'
     | '/admin'
     | '/auth'
     | '/book-measurement'
@@ -282,6 +294,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AddressesRoute: typeof AddressesRoute
   AdminRoute: typeof AdminRoute
   AuthRoute: typeof AuthRoute
   BookMeasurementRoute: typeof BookMeasurementRoute
@@ -317,6 +330,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/addresses': {
+      id: '/addresses'
+      path: '/addresses'
+      fullPath: '/addresses'
+      preLoaderRoute: typeof AddressesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -458,6 +478,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AddressesRoute: AddressesRoute,
   AdminRoute: AdminRoute,
   AuthRoute: AuthRoute,
   BookMeasurementRoute: BookMeasurementRoute,
