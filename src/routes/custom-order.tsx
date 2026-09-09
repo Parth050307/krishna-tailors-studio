@@ -416,6 +416,61 @@ function CustomOrder() {
                 </p>
               ) : (
                 <>
+                  <div className="mt-5 rounded-sm border border-border p-4">
+                    <Label>Use a saved measurement profile</Label>
+                    {profilesLoading ? (
+                      <p className="mt-2 text-xs text-muted-foreground">Loading your saved profiles…</p>
+                    ) : garmentProfiles.length ? (
+                      <>
+                        <div className="mt-2 flex flex-col gap-2 sm:flex-row">
+                          <select
+                            value={selectedProfileId}
+                            onChange={(e) => setSelectedProfileId(e.target.value)}
+                            className="h-10 w-full rounded-sm border border-input bg-background px-3 text-sm"
+                          >
+                            <option value="">No saved profile</option>
+                            {garmentProfiles.map((p) => (
+                              <option key={p.id} value={p.id}>
+                                {p.name} ({p.unit === "cm" ? "cm" : "inches"})
+                                {p.is_default ? " — default" : ""}
+                              </option>
+                            ))}
+                          </select>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="sm:w-auto"
+                            disabled={!selectedProfileId}
+                            onClick={() => applyProfile(selectedProfileId)}
+                          >
+                            Load measurements
+                          </Button>
+                          {defaultProfile ? (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="sm:w-auto"
+                              onClick={() => {
+                                setSelectedProfileId(defaultProfile.id);
+                                applyProfile(defaultProfile.id);
+                              }}
+                            >
+                              Use default profile
+                            </Button>
+                          ) : null}
+                        </div>
+                        <p className="mt-2 text-xs text-muted-foreground">
+                          Loading a profile fills the fields below — you can still edit any value.
+                        </p>
+                      </>
+                    ) : (
+                      <p className="mt-2 text-xs text-muted-foreground">
+                        You have no saved profiles for this garment yet. Enter your measurements
+                        below and save them for next time.
+                      </p>
+                    )}
+                  </div>
+
                   <div className="mt-4 flex gap-2">
                     {["in", "cm"].map((u) => (
                       <Button
@@ -440,18 +495,48 @@ function CustomOrder() {
                           type="number"
                           step={0.25}
                           value={values[f.field_key] ?? ""}
-                          onChange={(e) =>
-                            setValues({ ...values, [f.field_key]: Number(e.target.value) })
-                          }
+                          onChange={(e) => {
+                            setValues({ ...values, [f.field_key]: Number(e.target.value) });
+                            setEdited(true);
+                          }}
                           className="mt-2"
                         />
                         <p className="mt-1 text-xs text-muted-foreground">{f.instruction}</p>
                       </div>
                     ))}
                   </div>
+
+                  <div className="mt-5 rounded-sm border border-border p-4">
+                    <label className="flex items-center gap-3 text-sm">
+                      <Checkbox
+                        checked={saveAsProfile}
+                        onCheckedChange={(checked) => setSaveAsProfile(Boolean(checked))}
+                      />
+                      Save these measurements as a profile
+                    </label>
+                    {saveAsProfile ? (
+                      <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+                        <Input
+                          value={newProfileName}
+                          onChange={(e) => setNewProfileName(e.target.value)}
+                          maxLength={60}
+                          placeholder="Profile name (e.g. Regular)"
+                        />
+                        <Button
+                          variant="outline"
+                          className="sm:w-auto"
+                          disabled={savingProfile}
+                          onClick={saveProfile}
+                        >
+                          {savingProfile ? "Saving…" : "Save profile"}
+                        </Button>
+                      </div>
+                    ) : null}
+                  </div>
                 </>
               )}
             </div>
+
 
             <div className="card-luxe rounded-sm p-6">
               <h2 className="font-display text-xl text-primary">6. Delivery</h2>
