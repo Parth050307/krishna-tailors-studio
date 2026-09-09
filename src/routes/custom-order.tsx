@@ -592,7 +592,15 @@ function CustomOrder() {
                     ))}
                   </div>
 
+                  {edited && selectedProfileId ? (
+                    <p className="mt-3 text-xs text-muted-foreground">
+                      You've changed the loaded measurements — this order uses the values shown
+                      above.
+                    </p>
+                  ) : null}
+
                   <div className="mt-5 rounded-sm border border-border p-4">
+
                     <label className="flex items-center gap-3 text-sm">
                       <Checkbox
                         checked={saveAsProfile}
