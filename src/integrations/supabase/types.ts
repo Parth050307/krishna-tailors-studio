@@ -954,6 +954,16 @@ export type Database = {
           slot: string
         }[]
       }
+      check_discount: {
+        Args: { _code: string; _subtotal: number }
+        Returns: {
+          code: string
+          discount_amount: number
+          discount_type: string
+          message: string
+          valid: boolean
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
