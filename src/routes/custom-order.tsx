@@ -174,6 +174,59 @@ function CustomOrder() {
     return { stitching, fabricCost, addonCost, subtotal, delivery, tax, total: subtotal + tax + delivery };
   }, [service, fabric, fabricSource, meters, addons, deliveryMode]);
 
+  // Discount is checked by the database; the database recalculates it again when the order is placed.
+  const [applied, setApplied] = useState<{ code: string; amount: number; subtotal: number } | null>(null);
+  const [applying, setApplying] = useState(false);
+  const discountAmount = applied ? applied.amount : 0;
+  const grandTotal = Math.max(totals.total - discountAmount, 0);
+
+  const applyDiscount = async (code = discountCode, silent = false) => {
+    const trimmed = code.trim();
+    if (!trimmed) {
+      if (!silent) toast.error("Please enter a discount code.");
+      return;
+    }
+    if (!user) {
+      if (!silent) toast.error("Please log in to apply a discount.");
+      return;
+    }
+    setApplying(true);
+    const { data, error } = await supabase.rpc("check_discount", {
+      _code: trimmed,
+      _subtotal: totals.subtotal,
+    });
+    setApplying(false);
+    const row = data?.[0];
+    if (error || !row) {
+      setApplied(null);
+      toast.error("Could not check this code. Please try again.");
+      return;
+    }
+    if (!row.valid) {
+      setApplied(null);
+      toast.error(
+        row.message === "This discount code does not exist."
+          ? "This discount code is invalid or no longer active."
+          : row.message,
+      );
+      return;
+    }
+    setApplied({ code: row.code, amount: Number(row.discount_amount), subtotal: totals.subtotal });
+    if (!silent) toast.success(`Code ${row.code} applied — you save ${inr(Number(row.discount_amount))}.`);
+  };
+
+  const removeDiscount = () => {
+    setApplied(null);
+    setDiscountCode("");
+    toast.success("Discount removed.");
+  };
+
+  // Re-check when the order amount changes so the shown discount stays correct.
+  useEffect(() => {
+    if (applied && applied.subtotal !== totals.subtotal) void applyDiscount(applied.code, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [totals.subtotal]);
+
   const placeOrder = async () => {
     if (!user) {
       toast.error("Please log in to place an order.");
@@ -204,11 +257,11 @@ function CustomOrder() {
         subtotal: totals.subtotal,
         tax_amount: totals.tax,
         delivery_charge: totals.delivery,
-        discount_amount: 0,
-        discount_code: discountCode || null,
-        total: totals.total,
+        discount_amount: discountAmount,
+        discount_code: applied?.code ?? null,
+        total: grandTotal,
       })
-      .select("id, order_number")
+      .select("id, order_number, total")
       .single();
 
     if (error || !order) {
@@ -231,7 +284,7 @@ function CustomOrder() {
     await supabase.from("payments").insert({
       order_id: order.id,
       user_id: user.id,
-      amount: totals.total,
+      amount: Number(order.total),
       method: "MOCK",
       provider: "mock",
       status: "PAID",
@@ -695,16 +748,46 @@ function CustomOrder() {
               </dl>
               <div className="mt-4 border-t border-border pt-4">
                 <Label htmlFor="code">Discount code</Label>
-                <Input
-                  id="code"
-                  value={discountCode}
-                  onChange={(e) => setDiscountCode(e.target.value.toUpperCase())}
-                  className="mt-2"
-                />
+                {applied ? (
+                  <div className="mt-2 flex items-center justify-between gap-2 rounded-sm border border-border p-3 text-sm">
+                    <div>
+                      <p className="font-medium text-primary">{applied.code} applied</p>
+                      <p className="text-muted-foreground">You save {inr(applied.amount)}</p>
+                    </div>
+                    <Button variant="ghost" size="sm" onClick={removeDiscount}>
+                      Remove
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="mt-2 flex gap-2">
+                    <Input
+                      id="code"
+                      value={discountCode}
+                      onChange={(e) => setDiscountCode(e.target.value.toUpperCase())}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") void applyDiscount();
+                      }}
+                      maxLength={40}
+                    />
+                    <Button
+                      variant="outline"
+                      onClick={() => void applyDiscount()}
+                      disabled={applying || !discountCode.trim()}
+                    >
+                      {applying ? "Checking…" : "Apply"}
+                    </Button>
+                  </div>
+                )}
+                {applied ? (
+                  <div className="mt-3 flex justify-between text-sm">
+                    <span className="text-muted-foreground">Discount</span>
+                    <span>− {inr(applied.amount)}</span>
+                  </div>
+                ) : null}
               </div>
               <div className="mt-4 flex justify-between border-t border-border pt-4 font-display text-2xl text-primary">
                 <span>Total</span>
-                <span>{inr(totals.total)}</span>
+                <span>{inr(grandTotal)}</span>
               </div>
               <Button
                 size="lg"
