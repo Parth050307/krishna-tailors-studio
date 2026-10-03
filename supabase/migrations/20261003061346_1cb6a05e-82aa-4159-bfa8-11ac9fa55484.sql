@@ -1,0 +1,1 @@
+ALTER FUNCTION public.check_discount(text, numeric) SECURITY INVOKER;
